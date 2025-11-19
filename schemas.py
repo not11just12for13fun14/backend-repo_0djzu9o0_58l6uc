@@ -12,7 +12,8 @@ Model name is converted to lowercase for the collection name:
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
+from datetime import datetime
 
 # Example schemas (replace with your own):
 
@@ -37,6 +38,24 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# Sound Healing App Schemas
+
+class HealingSession(BaseModel):
+    """Logged meditation/sound healing session"""
+    track_id: Optional[str] = Field(None, description="ID or code of track used")
+    track_name: str = Field(..., description="Name of the sound/track")
+    mode: str = Field(..., description="tone|audio|nature")
+    duration_seconds: int = Field(..., ge=1, description="Planned or actual duration")
+    mood_before: Optional[str] = Field(None, description="How you felt before")
+    mood_after: Optional[str] = Field(None, description="How you felt after")
+    notes: Optional[str] = Field(None, description="Optional notes")
+
+class JournalEntry(BaseModel):
+    """Short reflective journal entry"""
+    text: str = Field(..., description="Journal text")
+    tags: Optional[List[str]] = Field(default=None, description="Optional tags")
+    created_at: Optional[datetime] = Field(default=None, description="Client timestamp if any")
 
 # Add your own schemas here:
 # --------------------------------------------------
